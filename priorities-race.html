@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Priorities Race Line</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+:root{--s:1;--page:#E9E3D6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--page:#131313}}
+:root[data-theme="dark"]{--page:#131313}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);min-height:100vh;display:grid;place-items:center;padding:16px;font-family:Archivo,sans-serif}
+body.export{padding:0;display:block}
+.box{width:calc(1080px*var(--s));height:calc(1350px*var(--s));overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+body.export .box{box-shadow:none}
+.poster{position:relative;width:1080px;height:1350px;transform:scale(var(--s));transform-origin:0 0;overflow:hidden;
+  background:#FFF4E0;color:#111;font-stretch:100%}
+.poster::before{content:"";position:absolute;inset:0;background:radial-gradient(#0000000f 1.2px,transparent 1.3px) 0 0/18px 18px;pointer-events:none}
+
+/* ───── HEADER ───── */
+.mast{position:absolute;left:46px;right:46px;top:24px;height:228px;z-index:3}
+.l1{display:flex;justify-content:space-between;align-items:flex-end}
+.how{font-weight:900;font-stretch:112%;font-size:58px;line-height:.9;letter-spacing:-.01em}
+.gantry{position:absolute;right:0;top:0;display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+.lights{display:flex;gap:7px;background:#111;padding:7px 9px;border-radius:8px;box-shadow:4px 4px 0 #E10600}
+.pod{display:flex;flex-direction:column;gap:5px;background:#262626;padding:5px;border-radius:5px}
+.pod i{width:24px;height:24px;border-radius:50%;background:#3a1512;display:block}
+.pod i.on{background:#FF2A1A;box-shadow:0 0 14px #FF2A1A,0 0 4px #fff inset}
+.kick{font-weight:900;font-stretch:85%;font-size:22px;letter-spacing:.08em;text-align:right;line-height:1.1}
+.kick b{color:#E10600}
+h1{margin-top:8px;position:relative;display:inline-block;background:#FFC800;border:4px solid #111;box-shadow:8px 8px 0 #111;
+  font-weight:900;font-stretch:118%;font-size:98px;line-height:1;letter-spacing:-.01em;padding:4px 18px 0;overflow:hidden}
+h1 .shine{position:absolute;top:0;bottom:0;width:120px;left:-160px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-18deg)}
+.l3{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.sub{background:#111;color:#FFF4E0;font-weight:800;font-stretch:100%;font-size:30px;letter-spacing:.03em;padding:5px 14px 4px;transform:rotate(-1deg)}
+.by{font-weight:800;font-size:22px;border:3px solid #111;background:#fff;padding:5px 12px;box-shadow:4px 4px 0 #111;transform:rotate(1.5deg)}
+.mast .flag{position:absolute;right:6px;top:118px;width:150px;height:84px}
+
+/* ───── BODY ───── */
+.body{position:absolute;left:46px;right:46px;top:258px;bottom:66px;display:flex;flex-direction:column;z-index:2}
+.lane{height:40px;flex:none}
+.endgap{height:8px;flex:none}
+.row{flex:1;display:grid;gap:16px;min-height:0}
+.r1{grid-template-columns:1.06fr 1.2fr .98fr}
+.r2{grid-template-columns:1.2fr .8fr 1.1fr}
+.r3{grid-template-columns:1fr 1.16fr 1.08fr}
+.card{position:relative;background:#fff;border:3px solid #111;box-shadow:6px 6px 0 #111;border-radius:8px;display:flex;flex-direction:column;overflow:hidden;will-change:transform,opacity}
+.card header{background:var(--c);border-bottom:3px solid #111;padding:6px 12px 7px}
+.tag{font-weight:800;font-stretch:80%;font-size:17px;letter-spacing:.08em;line-height:1.1}
+.tag b{background:#111;color:var(--c);padding:0 5px;border-radius:3px;margin-right:4px}
+.card h3{font-weight:900;font-stretch:78%;font-size:24px;line-height:1.05;margin-top:3px}
+.card h3 em{font-style:normal;font-weight:700;font-size:17px;letter-spacing:.01em;white-space:nowrap}
+.uf{font-stretch:88%;font-size:19px;line-height:1.2;padding:8px 12px 0;font-weight:500}
+.uf b{font-weight:900}
+.viz{flex:1;min-height:0;padding:8px 12px 10px;display:flex;flex-direction:column;justify-content:center;font-stretch:85%;font-size:17px;line-height:1.15}
+
+/* visuals */
+.eis{display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:1fr 1fr auto;gap:5px 6px;height:100%;max-height:150px}
+.eis .ay{align-self:center;text-align:right;font-weight:700;max-width:5.4em;line-height:1.05}
+.eis b{display:grid;place-items:center;border:2.5px solid #111;border-radius:5px;font-weight:900;font-size:18px;letter-spacing:0;font-stretch:80%}
+.eis .c1{background:var(--c)}.eis .c2{background:color-mix(in srgb,var(--c) 65%,#fff)}
+.eis .c3{background:color-mix(in srgb,var(--c) 40%,#fff)}.eis .c4{background:color-mix(in srgb,var(--c) 18%,#fff)}
+.eis .ax{text-align:center;font-weight:700}
+.ice{display:flex;flex-direction:column;gap:5px}
+.ice .r{display:grid;grid-template-columns:20px 118px 1fr;align-items:center;gap:6px}
+.ice i{font-style:normal;font-weight:900;text-align:center}
+.ice .r b{background:var(--c);border:2.5px solid #111;border-radius:5px;padding:3px 6px;font-weight:900;text-align:center}
+.ice .r span{color:#333;font-weight:500}
+.ice .tot{display:flex;align-items:center;gap:10px;margin-top:3px;padding-left:26px}
+.ice .tot b{border:2.5px solid #111;border-radius:5px;padding:3px 8px;font-weight:900;background:#111;color:var(--c)}
+.z4070 .zones,.z4070 .scale{display:grid;grid-template-columns:repeat(10,1fr)}
+.z4070 .zones span{display:grid;place-items:center;text-align:center;font-weight:800;font-size:19px;padding:8px 2px;line-height:1.05}
+.z4070 .zones span:nth-child(1){grid-column:1/4}
+.z4070 .zones span:nth-child(2){grid-column:4/8;background:var(--c);border:2.5px solid #111;border-bottom:0;border-radius:6px 6px 0 0}
+.z4070 .zones span:nth-child(3){grid-column:8/11}
+.z4070 .scale{border-top:3px solid #111;padding-top:8px;font-size:17px;font-stretch:75%;font-weight:700;text-align:center;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.z4070 .scale span{position:relative}
+.z4070 .scale span::before{content:"";position:absolute;left:50%;top:-10px;width:2px;height:7px;background:#111}
+.ooda{position:relative;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"a b" "d c";gap:10px 14px}
+.ooda .st{display:flex;gap:8px;align-items:flex-start}
+.ooda .st:nth-child(1){grid-area:a}.ooda .st:nth-child(2){grid-area:b}.ooda .st:nth-child(3){grid-area:c}.ooda .st:nth-child(4){grid-area:d}
+.ooda .ring{flex:none;width:36px;height:36px;border-radius:50%;background:var(--c);border:3px solid #111;display:grid;place-items:center;font-weight:900;font-size:19px;color:#fff}
+.ooda b{display:block;font-weight:900}
+.ooda .loop{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;background:#FFF4E0;border:2.5px solid #111;display:grid;place-items:center;font-weight:900;font-size:19px}
+.par{display:flex;align-items:flex-end;gap:18px;height:100%;border-left:3px solid #111;border-bottom:3px solid #111;padding:0 14px}
+.par .bar{flex:1;position:relative;border:2.5px solid #111;border-bottom:0;border-radius:6px 6px 0 0}
+.par .s{height:24%;background:color-mix(in srgb,var(--c) 35%,#fff)}
+.par .l{height:64%;background:var(--c)}
+.par .bar span{position:absolute;bottom:100%;left:-10px;right:-10px;text-align:center;font-weight:800;padding-bottom:5px;line-height:1.05}
+.rap{display:flex;flex-direction:column;gap:3px}
+.rap .rt{display:grid;grid-template-columns:32px 1fr 26px;align-items:center;gap:8px;border:2.5px solid #111;border-radius:5px;padding:2px 6px 2px 2px;background:color-mix(in srgb,var(--c) 14%,#fff)}
+.rap .rt.d{background:var(--c)}
+.rap .L{display:grid;place-items:center;height:23px;background:#111;color:var(--c);border-radius:3px;font-weight:900;font-size:19px}
+.rap .rt.d .L{color:#fff}
+.rap .rt b{font-weight:900}
+.rap sup{font-size:17px;font-weight:900;text-align:right;vertical-align:baseline}
+.ten{display:flex;flex-direction:column;gap:4px}
+.ten .tn{display:flex;align-items:center;gap:10px}
+.ten .clk{flex:none;width:36px;height:36px;border-radius:50%;background:var(--c);border:3px solid #111;display:grid;place-items:center;font-weight:900;font-size:18px;position:relative}
+.ten .clk::after{display:none;content:"";position:absolute;left:50%;top:5px;width:2.5px;height:10px;background:#111;transform-origin:50% 100%}
+.ten .tn:nth-child(2) .clk::after{transform:rotate(120deg)}
+.ten .tn:nth-child(3) .clk::after{transform:rotate(240deg)}
+.ten b{font-weight:900}
+.why{list-style:none;display:flex;flex-direction:column;gap:1px;line-height:1.12;position:relative;padding-left:20px}
+.why::before{content:"";position:absolute;left:5px;top:9px;bottom:9px;width:3px;background:#111}
+.why li{position:relative}
+.why li::before{content:"";position:absolute;left:-20px;top:4px;width:13px;height:13px;border-radius:50%;background:var(--c);border:2.5px solid #111;box-sizing:border-box}
+.why li.e{font-weight:900}
+.why li.e::before{background:#111}
+.why li b{font-weight:900}
+.swot{display:flex;flex-direction:column;gap:4px;font-stretch:78%}
+.swot .sw{display:grid;grid-template-columns:28px auto 1fr;white-space:nowrap;align-items:center;gap:8px;border:2.5px solid #111;border-radius:5px;padding:2px 8px 2px 2px;background:color-mix(in srgb,var(--c) 18%,#fff)}
+.swot strong{display:grid;place-items:center;height:26px;background:var(--c);border-right:2.5px solid #111;font-weight:900;font-size:19px;margin:-2px 0 -2px -2px;height:28px}
+.swot b{font-weight:900}
+
+/* ───── TRACK (svg) ───── */
+.trk{position:absolute;inset:0;z-index:1;overflow:visible}
+.node text{font-family:Archivo,sans-serif;font-weight:900;font-size:17px;font-stretch:85%}
+
+/* ───── FOOTER ───── */
+.foot{position:absolute;left:0;right:0;bottom:0;height:66px;background:#111;color:#FFF4E0;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:6px 46px 0;font-stretch:90%;font-size:20px;font-weight:600}
+.foot::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:conic-gradient(#fff 25%,#111 0 50%,#fff 0 75%,#111 0) 0 0/10px 10px}
+.foot b{font-weight:900;background:#FFC800;color:#111;padding:2px 10px;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="box"><div class="poster" id="P">
+  <svg class="trk" id="trk" width="1080" height="1350" viewBox="0 0 1080 1350" aria-hidden="true">
+    <defs>
+      <pattern id="chq" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#fff"/><rect width="5" height="5" fill="#111"/><rect x="5" y="5" width="5" height="5" fill="#111"/></pattern>
+    </defs>
+    <path id="kerb" fill="none" stroke="#E10600" stroke-width="36" stroke-linejoin="round" stroke-linecap="butt"/>
+    <path id="kerbW" fill="none" stroke="#fff" stroke-width="36" stroke-dasharray="14 14" stroke-linejoin="round"/>
+    <path id="asph" fill="none" stroke="#2B2B2B" stroke-width="26" stroke-linejoin="round"/>
+    <path id="cline" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-dasharray="10 10"/>
+    <path id="trail" fill="none" stroke="#FFC800" stroke-width="5" stroke-linecap="round"/>
+    <g id="startG"></g>
+    <g id="finishG"></g>
+    <g id="nodes"></g>
+    <g id="car">
+      <rect x="-26" y="-12" width="6" height="24" rx="1.5" fill="#111"/>
+      <rect x="-17" y="-13" width="11" height="6" rx="2" fill="#111"/><rect x="-17" y="7" width="11" height="6" rx="2" fill="#111"/>
+      <rect x="9" y="-12" width="10" height="5" rx="2" fill="#111"/><rect x="9" y="7" width="10" height="5" rx="2" fill="#111"/>
+      <path d="M-22 -6 L10 -5 L28 -2 L28 2 L10 5 L-22 6 Z" fill="#E10600" stroke="#111" stroke-width="1.5"/>
+      <rect x="23" y="-12" width="5" height="24" rx="1.5" fill="#111"/>
+      <ellipse cx="-2" cy="0" rx="7" ry="3.6" fill="#111"/><circle cx="-1" cy="0" r="2.6" fill="#FFC800"/>
+    </g>
+  </svg>
+
+  <header class="mast">
+    <div class="l1">
+      <span class="how">HOW TO SET</span>
+      <div class="gantry">
+        <div class="lights" id="lights"></div>
+        <div class="kick"><b>9 TURNS</b><br>ONE RACE LINE</div>
+      </div>
+    </div>
+    <h1><span>PRIORITIES</span><i class="shine" id="shine"></i></h1>
+    <svg class="flag" viewBox="0 0 150 84" aria-hidden="true"><defs><pattern id="fc" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#fff"/><rect width="8" height="8" fill="#111"/><rect x="8" y="8" width="8" height="8" fill="#111"/></pattern></defs>
+      <rect x="18" y="4" width="5" height="80" rx="2" fill="#111"/><path id="flagP" d="M23 6 C 55 -4, 85 18, 140 6 L 140 52 C 85 64, 55 42, 23 52 Z" fill="url(#fc)" stroke="#111" stroke-width="3"/></svg>
+    <div class="l3"><span class="sub">WHEN EVERYTHING FEELS URGENT</span><span class="by">by Eric Partaker</span></div>
+  </header>
+
+  <main class="body" id="body"></main>
+
+  <footer class="foot"><span>Get PDFs of this + 100 more tools with my free newsletter.</span><span>Follow <b>Eric Partaker</b></span></footer>
+</div></div>
+
+<script>
+const IT=[
+ {n:1,name:"Eisenhower Matrix",ht:null,ul:"Use for:",uf:"Separating urgent fires from strategic priorities.",tag:"RACE STRATEGY",c:"#FF5A36",v:"eisen"},
+ {n:2,name:"ICE Scoring Framework",ht:"Sean Ellis",ul:"Use For:",uf:"Quick evaluation of competing initiatives.",tag:"QUALIFYING",c:"#FFC800",v:"ice"},
+ {n:3,name:"40/70 Rule",ht:"Colin Powell",ul:"Use For:",uf:"Prioritizing speed over perfection when stakes are high.",tag:"PIT-WALL CALL",c:"#3DDC97",v:"z4070"},
+ {n:4,name:"OODA Loop",ht:"John Boyd",ul:"Use For:",uf:"Rapidly reprioritizing when market conditions shift.",tag:"LAP BY LAP",c:"#4D7CFE",v:"ooda"},
+ {n:5,name:"80/20 Rule",ht:"Vilfredo Pareto",ul:"Use For:",uf:"Identifying the vital few priorities that drive most results.",tag:"DRS ZONE",c:"#FF7EB6",v:"par"},
+ {n:6,name:"RAPID® Framework",ht:"Bain & Co",ul:"Use For:",uf:"Team roles in complex decisions.",tag:"PIT CREW ROLES",c:"#00C2D1",v:"rap"},
+ {n:7,name:"10/10/10 Rule",ht:"Suzy Welch",ul:"Use For:",uf:"Balancing short-term urgency against long-term priorities.",tag:"STINT PLANNING",c:"#B18CFF",v:"ten"},
+ {n:8,name:"5 Whys Framework",ht:"Sakichi Toyoda",ul:"Use For:",uf:"Prioritizing root causes over symptoms.",tag:"POST-RACE DEBRIEF",c:"#FF9F1C",v:"why"},
+ {n:9,name:"SWOT Analysis Framework",ht:"Albert Humphrey",ul:"Use For:",uf:"Prioritizing initiatives based on strategic position.",tag:"GRID POSITION",c:"#9BE15D",v:"swot"}
+];
+const V={
+ eisen:()=>`<div class="eis"><span class="ay">Important</span><b class="c1">DO</b><b class="c2">DECIDE</b><span class="ay">Not Important</span><b class="c3">DELEGATE</b><b class="c4">DELETE</b><span></span><span class="ax">Urgent</span><span class="ax">Not Urgent</span></div>`,
+ ice:()=>`<div class="ice"><div class="r"><i></i><b>Impact</b><span>Business value potential</span></div><div class="r"><i>X</i><b>Confidence</b><span>Evidence supporting success</span></div><div class="r"><i>X</i><b>Ease</b><span>Implementation difficulty</span></div><div class="tot"><b>= Final Score</b><span>Multiply all three</span></div></div>`,
+ z4070:()=>`<div class="z4070"><div class="zones"><span>Too little info</span><span>Decision zone</span><span>Analysis paralysis</span></div><div class="scale">${[10,20,30,40,50,60,70,80,90,100].map(x=>`<span>${x}</span>`).join("")}</div></div>`,
+ ooda:()=>`<div class="ooda">${[["O","Observe:","Gather current data"],["O","Orient:","Analyze and synthesize"],["D","Decide:","Choose course of action"],["A","Act:","Execute and monitor"]].map(([l,b,s])=>`<div class="st"><span class="ring">${l}</span><div><b>${b}</b>${s}</div></div>`).join("")}<span class="loop">↻</span></div>`,
+ par:()=>`<div class="par"><div class="bar s"><span>20% of high-impact choices</span></div><div class="bar l"><span>80% of desired results</span></div></div>`,
+ rap:()=>`<div class="rap">${[["R","Recommend:","Proposal owner",1],["I","Input:","Provide expertise",4],["D","Decide:","Final call",5],["A","Agree:","Must approve",2],["P","Perform:","Execute decision",3]].map(([l,b,s,n])=>`<div class="rt ${l=="D"?"d":""}"><span class="L">${l}</span><span><b>${b}</b> ${s}</span><sup>${n}</sup></div>`).join("")}</div>`,
+ ten:()=>`<div class="ten">${[["10 minutes:","Immediate impact"],["10 months:","Medium-term effects"],["10 years:","Long-term consequences"]].map(([b,s])=>`<div class="tn"><span class="clk">10</span><span><b>${b}</b> ${s}</span></div>`).join("")}</div>`,
+ why:()=>`<ol class="why"><li class="e">Define the Problem</li>${["Why did this happen?","Why did that cause occur?","Why did that happen?","Why was that the case?","Why wasn't this prevented?"].map(q=>`<li><b>Why</b> - ${q}</li>`).join("")}<li class="e">Root Cause</li></ol>`,
+ swot:()=>`<div class="swot">${[["S","Strengths:","Internal advantages"],["W","Weaknesses:","Internal limitations"],["O","Opportunities:","External possibilities"],["T","Threats:","External threats"]].map(([l,b,s])=>`<div class="sw"><strong>${l}</strong><b>${b}</b><span>${s}</span></div>`).join("")}</div>`
+};
+const card=it=>`<article class="card" id="c${it.n}" style="--c:${it.c}"><header><div class="tag"><b>TURN ${it.n}</b>${it.tag}</div><h3>${it.name}${it.ht?` <em>(h/t ${it.ht.replace("&","&amp;")})</em>`:""}</h3></header><p class="uf"><b>${it.ul}</b> ${it.uf}</p><div class="viz">${V[it.v]()}</div></article>`;
+const by=n=>IT[n-1];
+document.getElementById("body").innerHTML=
+ `<div class="lane"></div><div class="row r1">${[1,2,3].map(n=>card(by(n))).join("")}</div>
+  <div class="lane"></div><div class="row r2">${[6,5,4].map(n=>card(by(n))).join("")}</div>
+  <div class="lane"></div><div class="row r3">${[7,8,9].map(n=>card(by(n))).join("")}</div><div class="endgap"></div>`;
+document.getElementById("lights").innerHTML=Array.from({length:5},()=>`<div class="pod"><i></i></div>`).join("");
+
+/* ───── build track from layout ───── */
+const NS="http://www.w3.org/2000/svg";
+let L=0, nodeF=[], tHit=[], path;
+function build(){
+  const P=document.getElementById("P").getBoundingClientRect(), sc=P.width/1080;
+  const rel=e=>{const r=e.getBoundingClientRect();return{x:(r.left-P.left)/sc,y:(r.top-P.top)/sc,w:r.width/sc,h:r.height/sc}};
+  const lanes=[...document.querySelectorAll(".lane")].map(e=>{const r=rel(e);return r.y+r.h/2});
+  const xL=23,xR=1057,R=22,x0=70,yEnd=1252;
+  const [y0,y1,y2]=lanes;
+  const d=`M${x0} ${y0} H${xR-R} Q${xR} ${y0} ${xR} ${y0+R} V${y1-R} Q${xR} ${y1} ${xR-R} ${y1} H${xL+R} Q${xL} ${y1} ${xL} ${y1+R} V${y2-R} Q${xL} ${y2} ${xL+R} ${y2} H${xR-R} Q${xR} ${y2} ${xR} ${y2+R} V${yEnd}`;
+  ["kerb","kerbW","asph","cline","trail"].forEach(id=>document.getElementById(id).setAttribute("d",d));
+  path=document.getElementById("asph"); L=path.getTotalLength();
+  const tr=document.getElementById("trail"); tr.setAttribute("stroke-dasharray",`${L} ${L}`);
+  // start grid + finish line
+  document.getElementById("startG").innerHTML=`<rect x="${x0-14}" y="${y0-13}" width="8" height="26" fill="url(#chq)"/>`;
+  const yF=yEnd-34;
+  document.getElementById("finishG").innerHTML=`<rect x="${xR-13}" y="${yF-5}" width="26" height="10" fill="url(#chq)"/>`;
+  // nodes: card centre-x on its lane
+  const samp=[];for(let i=0;i<=1600;i++){const p=path.getPointAtLength(L*i/1600);samp.push([p.x,p.y,i/1600])}
+  const laneOf={1:y0,2:y0,3:y0,4:y1,5:y1,6:y1,7:y2,8:y2,9:y2};
+  let g="";nodeF=[];
+  IT.forEach(it=>{const r=rel(document.getElementById("c"+it.n));const nx=r.x+r.w/2, ny=laneOf[it.n];
+    let best=1e9,f=0;samp.forEach(([x,y,ff])=>{const dd=(x-nx)**2+(y-ny)**2;if(dd<best){best=dd;f=ff}});nodeF[it.n]=f;
+    g+=`<g class="node" id="n${it.n}" transform="translate(${nx} ${ny})"><circle r="19" fill="#fff" stroke="#111" stroke-width="3"/><text y="6" text-anchor="middle" fill="#111">T${it.n}</text></g>`;});
+  document.getElementById("nodes").innerHTML=g;
+  // time each card is reached
+  tHit=[];for(let n=1;n<=9;n++){let t=T0;while(t<T1&&prog(t)<nodeF[n])t+=.004;tHit[n]=t;}
+}
+/* ───── timeline (seconds, 9 s loop) ───── */
+const T0=1.05,T1=6.7,DUR=9;
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+function prog(t){const u=clamp((t-T0)/(T1-T0));return .72*u+.28*(.5-.5*Math.cos(Math.PI*u))}
+const backOut=x=>{const c=1.6;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+function render(t){
+  // lights: on one pod at a time, then lights out
+  document.querySelectorAll(".pod").forEach((pd,k)=>{const on=t>.15+k*.16&&t<T0;pd.querySelectorAll("i").forEach(i=>i.classList.toggle("on",on))});
+  const out=1-clamp((t-8.62)/.33); // loop fade
+  const p=prog(t);
+  const pt=path.getPointAtLength(L*p), pt2=path.getPointAtLength(Math.min(L,L*p+1.5)), pt1=path.getPointAtLength(Math.max(0,L*p-1.5));
+  const ang=Math.atan2(pt2.y-pt1.y,pt2.x-pt1.x)*180/Math.PI;
+  const car=document.getElementById("car");car.setAttribute("transform",`translate(${pt.x} ${pt.y}) rotate(${ang})`);car.style.opacity=out;
+  const tr=document.getElementById("trail");tr.setAttribute("stroke-dashoffset",L*(1-p));tr.style.opacity=out;
+  for(let n=1;n<=9;n++){
+    const r=clamp((t-tHit[n]+.1)/.42)*out, e=r<=0?0:backOut(r);
+    const c=document.getElementById("c"+n);
+    c.style.opacity=clamp(r*1.6);c.style.transform=`translateY(${(1-e)*26}px) scale(${.9+.1*e})`;
+    const nd=document.querySelector("#n"+n+" circle");nd.setAttribute("fill",t>=tHit[n]&&out>0?by(n).c:"#fff");
+  }
+  const w=Math.sin(t*2*Math.PI/1.5)*6;document.getElementById("flagP").setAttribute("d",`M23 6 C 55 ${-4+w}, 85 ${18-w}, 140 6 L 140 52 C 85 ${64-w}, 55 ${42+w}, 23 52 Z`);
+  const sh=clamp((t-7.0)/.9);document.getElementById("shine").style.left=(-160+sh*1100)+"px";
+}
+function fit(){const s=document.body.classList.contains("export")?1:Math.min((innerWidth-32)/1080,(innerHeight-32)/1350,1);document.documentElement.style.setProperty("--s",s)}
+window.renderAt=t=>render(t);
+document.fonts.ready.then(()=>{fit();build();
+  if(!document.body.classList.contains("export")){const st=performance.now();(function loop(now){render(((now-st)/1000)%DUR);requestAnimationFrame(loop)})(st)}
+  else render(8);
+  window.ready=true;});
+addEventListener("resize",()=>{fit();build()});
+if(location.hash=="#export")document.body.classList.add("export");
+</script>
+</body>
+</html>
